@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portfolio — Chenyu (Mabel) Mao</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+img { display: block; max-width: 100%; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+button { background: none; border: none; cursor: pointer; }
+
+:root {
+  --cream:     #F5F0E8;
+  --parchment: #EDE5D0;
+  --sand:      #D4C4A0;
+  --warm:      #B8A882;
+  --bark:      #7A6A52;
+  --earth:     #5C4A35;
+  --dark:      #2A2017;
+  --charcoal:  #1A1510;
+  --muted:     #9E8E76;
+  --ink:       #3A2E22;
+  --white:     #FDFAF5;
+  --accent:    #8B7355;
+  --ff-display: 'Cormorant Garamond', Georgia, serif;
+  --ff-body:    'Jost', sans-serif;
+  --ease:       cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:   cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body {
+  font-family: var(--ff-body);
+  font-weight: 300;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px;
+}
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--parchment); }
+::-webkit-scrollbar-thumb { background: var(--bark); border-radius: 3px; }
+
+.label {
+  display: block;
+  font-family: var(--ff-body);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.4rem 3.5rem;
+  transition: background 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+.nav.scrolled {
+  background: rgba(245,240,232,0.94);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--sand);
+}
+.nav__logo { font-family: var(--ff-display); font-size: 1.5rem; font-weight: 600; letter-spacing: 0.08em; color: var(--ink); }
+.nav__links { display: flex; gap: 2.5rem; align-items: center; }
+.nav__links a { font-family: var(--ff-body); font-size: 0.65rem; font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bark); transition: color 0.3s; }
+.nav__links a:hover { color: var(--ink); }
+.nav__cta { border: 1px solid var(--bark) !important; padding: 0.45rem 1.2rem; transition: background 0.3s, color 0.3s !important; }
+.nav__cta:hover { background: var(--bark) !important; color: var(--cream) !important; }
+
+/* ═══════════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8vw;
+  gap: 4vw;
+  overflow: hidden;
+  background: var(--cream);
+}
+.hero__bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 72% 38%, rgba(184,168,130,0.18) 0%, transparent 60%), radial-gradient(ellipse at 18% 75%, rgba(122,106,82,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero__content { position: relative; z-index: 2; max-width: 560px; padding-top: 5rem; }
+.hero__eyebrow { font-family: var(--ff-body); font-size: 0.6rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.8rem; opacity: 0; animation: fUp 0.8s 0.1s var(--ease) forwards; }
+.hero__name { font-family: var(--ff-display); font-size: clamp(4rem, 6.5vw, 7rem); font-weight: 300; line-height: 1; color: var(--ink); opacity: 0; animation: fUp 0.9s 0.25s var(--ease) forwards; }
+.hero__name em { font-style: italic; color: var(--bark); }
+.hero__subtitle { font-family: var(--ff-body); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-top: 1.4rem; opacity: 0; animation: fUp 0.9s 0.42s var(--ease) forwards; }
+.hero__rule { width: 50px; height: 1px; background: var(--sand); margin: 2.2rem 0; opacity: 0; animation: fUp 0.9s 0.55s var(--ease) forwards; }
+.hero__tagline { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 300; color: var(--bark); line-height: 1.7; opacity: 0; animation: fUp 0.9s 0.68s var(--ease) forwards; }
+.hero__cue { display: inline-flex; align-items: center; gap: 0.8rem; margin-top: 3rem; font-family: var(--ff-body); font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: fUp 0.9s 0.9s var(--ease) forwards; transition: color 0.3s; }
+.hero__cue:hover { color: var(--ink); }
+.hero__cue svg { animation: bob 2.4s ease-in-out infinite; }
+.hero__frame { position: relative; flex-shrink: 0; width: clamp(260px, 30vw, 440px); aspect-ratio: 3/4; opacity: 0; animation: fIn 1.2s 0.3s var(--ease) forwards; }
+.hero__frame img { width: 100%; height: 100%; object-fit: cover; filter: sepia(22%) brightness(0.93) contrast(1.04); }
+.hero__frame::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, rgba(245,240,232,0.45)); z-index: 1; pointer-events: none; }
+.hero__frame::after { content: ''; position: absolute; top: 1.4rem; right: -1.4rem; bottom: -1.4rem; left: 1.4rem; border: 1px solid var(--sand); pointer-events: none; z-index: -1; }
+
+@keyframes fUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fIn  { from { opacity:0; } to { opacity:1; } }
+@keyframes bob  { 0%,100% { transform:translateY(0); } 50% { transform:translateY(6px); } }
+
+/* ═══════════════════════════════════════════════════
+   ABOUT
+═══════════════════════════════════════════════════ */
+.about { padding: 9rem 8vw; background: var(--parchment); border-top: 1px solid var(--sand); }
+.about__inner { max-width: 1260px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; align-items: center; }
+.about__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 2rem; }
+.about__h2 em { font-style: italic; color: var(--bark); }
+.about__body p { font-size: 0.92rem; color: var(--bark); line-height: 1.9; margin-bottom: 1.2rem; }
+.about__stats { display: flex; gap: 3rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--sand); }
+.stat__n { display: block; font-family: var(--ff-display); font-size: 2.6rem; font-weight: 300; color: var(--ink); line-height: 1; }
+.stat__l { display: block; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
+.about__imgs { position: relative; height: 520px; }
+.about__img { position: absolute; object-fit: cover; filter: sepia(18%) brightness(0.9) contrast(1.05); }
+.about__img--a { width: 72%; height: 74%; top: 0; right: 0; }
+.about__img--b { width: 58%; height: 58%; bottom: 0; left: 0; border: 6px solid var(--parchment); box-shadow: 0 24px 60px rgba(42,32,23,0.14); }
+
+/* ═══════════════════════════════════════════════════
+   CAREER — ROADMAP (single-column, canvas + detail below)
+═══════════════════════════════════════════════════ */
+.career { background: var(--cream); border-top: 1px solid var(--sand); }
+
+.career__intro {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 9rem 8vw 4rem;
+}
+.career__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 1rem; }
+.career__h2 em { font-style: italic; color: var(--bark); }
+.career__sub { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+
+/* The scroll track is tall enough to animate through all jobs */
+.career__scroll-track { height: 500vh; position: relative; }
+
+.career__sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 8vw 2rem;
+  gap: 0;
+  overflow: hidden;
+}
+
+/* Status line */
+.career__status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--ff-body);
+  font-size: 0.55rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+  align-self: flex-start;
+  width: 100%;
+  max-width: 860px;
+}
+.career__status__dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--bark);
+  flex-shrink: 0;
+  animation: statusPulse 2.4s ease-in-out infinite;
+}
+@keyframes statusPulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.3; transform:scale(0.6); } }
+
+/* Canvas card — full width, contained */
+.career__map {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  height: 320px;
+  background: var(--parchment);
+  border: 1px solid var(--sand);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+#roadCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.career__map-pins { position: absolute; inset: 0; pointer-events: none; }
+
+/* Road node pins */
+.rpin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.rpin__node {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--bark);
+  background: var(--parchment);
+  flex-shrink: 0;
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+}
+.rpin.show .rpin__node { opacity: 1; transform: scale(1); }
+.rpin.active .rpin__node { background: var(--bark); box-shadow: 0 0 0 3px rgba(122,106,82,0.15); }
+
+.rpin__logo {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--sand);
+  background: var(--cream);
+  overflow: hidden;
+  margin-top: 4px;
+  opacity: 0;
+  transform: scale(0);
+  box-shadow: 0 1px 6px rgba(42,32,23,0.1);
+  transition: opacity 0.3s var(--ease-out) 0.1s, transform 0.3s var(--ease-out) 0.1s;
+}
+.rpin.show .rpin__logo { opacity: 1; transform: scale(1); }
+.rpin__logo img { width: 100%; height: 100%; object-fit: cover; }
+
+.rpin__label {
+  margin-top: 3px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity 0.3s var(--ease-out) 0.2s, transform 0.3s var(--ease-out) 0.2s;
+}
+.rpin.show .rpin__label { opacity: 1; transform: translateY(0); }
+.rpin__label-date {
+  display: block;
+  font-family: var(--ff-body);
+  font-size: 0.4rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.rpin__label-role {
+  display: block;
+  font-family: var(--ff-display);
+  font-size: 0.62rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.2;
+  max-width: 80px;
+}
+.rpin__label-co {
+  display: block;
+  font-family: var(--ff-body);
+  font-size: 0.38rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bark);
+}
+
+/* Detail panel — sits below canvas, full width */
+.career__detail {
+  width: 100%;
+  max-width: 860px;
+  margin-top: 1rem;
+  background: rgba(245,240,232,0.96);
+  border: 1px solid var(--sand);
+  border-radius: 10px;
+  padding: 1.4rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto auto;
+  gap: 0;
+  box-shadow: 0 2px 18px rgba(42,32,23,0.05);
+  flex-shrink: 0;
+}
+.career__detail-tag {
+  grid-column: 1 / -1;
+  display: inline-block;
+  font-family: var(--ff-body);
+  font-size: 0.48rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bark);
+  border: 1px solid var(--sand);
+  padding: 0.22rem 0.7rem;
+  border-radius: 100px;
+  margin-bottom: 0.7rem;
+  justify-self: start;
+}
+.career__detail-role {
+  grid-column: 1;
+  font-family: var(--ff-display);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.15;
+  margin-bottom: 0.3rem;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+  align-self: end;
+}
+.career__detail-meta {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--ff-body);
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+.career__detail-meta-sep { color: var(--sand); }
+.career__detail-rule { grid-column: 1 / -1; width: 100%; height: 1px; background: var(--sand); margin-bottom: 0.75rem; }
+.career__detail-desc {
+  grid-column: 1 / -1;
+  font-family: var(--ff-body);
+  font-size: 0.78rem;
+  color: var(--bark);
+  line-height: 1.8;
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+/* Swap animation */
+.career__detail.swapping .career__detail-role,
+.career__detail.swapping .career__detail-desc { opacity: 0; transform: translateY(4px); }
+
+/* Scroll hint */
+.career__hint {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--ff-body);
+  font-size: 0.52rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+  transition: opacity 0.5s;
+  z-index: 10;
+  white-space: nowrap;
+}
+.career__hint svg { animation: bob 2s ease-in-out infinite; }
+.career__hint.hidden { opacity: 0; }
+
+/* ═══════════════════════════════════════════════════
+   EDUCATION
+═══════════════════════════════════════════════════ */
+.edu { padding: 9rem 8vw; background: var(--parchment); border-top: 1px solid var(--sand); }
+.edu__inner { max-width: 1260px; margin: 0 auto; }
+.edu__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 4rem; }
+.edu__h2 em { font-style: italic; color: var(--bark); }
+.edu__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; }
+.edu-card { background: var(--cream); padding: 2.8rem; border: 1px solid var(--sand); position: relative; overflow: hidden; transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease); cursor: default; }
+.edu-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(42,32,23,0.1); z-index: 1; }
+.edu-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--bark), var(--warm)); transform: scaleX(0); transition: transform 0.4s var(--ease); }
+.edu-card:hover::before { transform: scaleX(1); }
+.edu-card__year { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.6rem; }
+.edu-card__logo { width: 54px; height: 54px; border-radius: 50%; overflow: hidden; border: 1px solid var(--sand); margin-bottom: 1.6rem; }
+.edu-card__logo img { width: 100%; height: 100%; object-fit: cover; filter: sepia(25%) grayscale(35%); }
+.edu-card h3 { font-family: var(--ff-display); font-size: 1.35rem; font-weight: 400; color: var(--ink); line-height: 1.3; margin-bottom: 0.5rem; }
+.edu-card__inst { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--bark); margin-bottom: 1rem; }
+.edu-card__desc { font-size: 0.875rem; color: var(--muted); line-height: 1.8; }
+
+/* ═══════════════════════════════════════════════════
+   ACHIEVEMENTS
+═══════════════════════════════════════════════════ */
+.ach { padding: 9rem 8vw; background: var(--cream); border-top: 1px solid var(--sand); }
+.ach__inner { max-width: 1260px; margin: 0 auto; }
+.ach__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 4rem; }
+.ach__h2 em { font-style: italic; color: var(--bark); }
+.ach-row { display: grid; grid-template-columns: 68px 1px 1fr auto; align-items: start; gap: 2.2rem; padding: 2rem 1rem; margin: 0 -1rem; border-bottom: 1px solid var(--sand); transition: background 0.35s var(--ease); cursor: default; }
+.ach-row:hover { background: var(--parchment); }
+.ach-row__year { font-family: var(--ff-display); font-size: 1.15rem; font-weight: 300; color: var(--muted); padding-top: 0.15rem; }
+.ach-row__div { background: var(--sand); align-self: stretch; min-height: 36px; width: 1px; }
+.ach-row__body h3 { font-family: var(--ff-display); font-size: 1.3rem; font-weight: 400; color: var(--ink); margin-bottom: 0.5rem; }
+.ach-row__body p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; }
+.ach-row__tag { font-size: 0.52rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bark); border: 1px solid var(--warm); padding: 0.3rem 0.75rem; border-radius: 100px; white-space: nowrap; align-self: center; }
+
+/* ═══════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════════ */
+.footer { background: var(--charcoal); color: var(--sand); padding: 9rem 8vw 5rem; border-top: 1px solid var(--earth); }
+.footer__inner { max-width: 1260px; margin: 0 auto; }
+.footer__cta h2 { font-family: var(--ff-display); font-size: clamp(3rem, 5.5vw, 5.5rem); font-weight: 300; line-height: 1.08; color: var(--parchment); margin-bottom: 1.8rem; }
+.footer__cta h2 em { font-style: italic; color: var(--warm); }
+.footer__cta p { font-size: 0.9rem; color: var(--muted); max-width: 380px; line-height: 1.85; margin-bottom: 2.5rem; }
+.footer__email { font-family: var(--ff-display); font-size: 1.5rem; color: var(--warm); border-bottom: 1px solid var(--bark); padding-bottom: 2px; transition: color 0.3s, border-color 0.3s; }
+.footer__email:hover { color: var(--parchment); border-color: var(--parchment); }
+.footer__socials { display: flex; gap: 2.5rem; flex-wrap: wrap; margin-top: 6rem; padding-top: 2.5rem; border-top: 1px solid #3A2E22; }
+.footer__socials a { font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); transition: color 0.3s; }
+.footer__socials a:hover { color: var(--parchment); }
+.footer__base { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; font-size: 0.6rem; color: var(--earth); letter-spacing: 0.1em; }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .nav { padding: 1.2rem 1.8rem; }
+  .nav__links { display: none; }
+  .hero { flex-direction: column-reverse; padding-top: 8rem; padding-bottom: 4rem; justify-content: center; text-align: center; }
+  .hero__rule { margin: 2rem auto; }
+  .hero__cue { justify-content: center; }
+  .hero__frame { width: 70vw; aspect-ratio: 3/4; }
+  .hero__frame::after { display: none; }
+  .about__inner { grid-template-columns: 1fr; }
+  .about__imgs { display: none; }
+  .career__sticky { padding: 3.5rem 5vw 2rem; }
+  .career__map { height: 220px; }
+  .career__detail { padding: 1.2rem 1.4rem; }
+  .career__detail-role { font-size: 1.1rem; }
+  .ach-row { grid-template-columns: 1fr; gap: 0.8rem; }
+  .ach-row__div { display: none; }
+  .footer__base { flex-direction: column; gap: 0.5rem; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav__logo">Maison Mabel</div>
+  <ul class="nav__links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#career">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact" class="nav__cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero__bg"></div>
+  <div class="hero__content">
+    <p class="hero__eyebrow">Portfolio · 2026</p>
+    <h1 class="hero__name">Chenyu (Mabel) <em>Mao</em></h1>
+    <p class="hero__subtitle">Imperial College London — MSc Strategic Marketing</p>
+    <div class="hero__rule"></div>
+    <p class="hero__tagline">Brand marketing focus<br>at the intersection of<br>data and human desire.</p>
+    <a href="#about" class="hero__cue">
+      <span>Discover</span>
+      <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
+        <path d="M7 0v18M1 12l6 8 6-8" stroke="currentColor" stroke-width="1.2"/>
+      </svg>
+    </a>
+  </div>
+  <div class="hero__frame">
+    <img src="https://media.licdn.com/dms/image/v2/D4E03AQGeimkPW8pQOw/profile-displayphoto-crop_800_800/B4EZqpKcW_GcAI-/0/1763774679399?e=1773878400&v=beta&t=uwnh8LFhXTWdl_Pc6FxHcejQwID63MuncIhYbuKz13I" alt="Portrait"/>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about__inner">
+    <div class="about__left reveal">
+      <span class="label">001 — About</span>
+      <h2 class="about__h2">A life lived<br><em>with intention.</em></h2>
+      <div class="about__body">
+        <p>I am an aspiring brand strategist with expertise in data-driven brand growth. My work sits at the intersection of advanced analytics, consumer psychology, and transformative brand strategy.</p>
+        <p>From China and holding a Management degree from Alliance Manchester Business School, I bring international experience and a rigorous global perspective to every brand campaign. I believe the most effective brand marketing is precision-crafted, and that insight and impact are always aligned.</p>
+      </div>
+
+      <div class="about__stats">
+        <div><span class="stat__n"><center>3</center></span><span class="stat__l">Countries Studied</span></div>
+        <div><span class="stat__n"><center>Top 2</center></span><span class="stat__l">Global University</span></div>
+        <div><span class="stat__n"><center>2</center></span><span class="stat__l">Brand Projects</span></div>
+      </div>
+    </div>
+    <div class="about__imgs reveal" style="transition-delay:0.15s">
+      <img class="about__img about__img--a" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Workspace"/>
+      <img class="about__img about__img--b" src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=500&q=80" alt="Design process"/>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER — ROADMAP -->
+<section class="career" id="career">
+  <div class="career__intro reveal">
+    <span class="label">002 — Career</span>
+    <h2 class="career__h2">The journey<br><em>so far.</em></h2>
+    <p class="career__sub">Scroll to traverse the roadmap of experience.</p>
+  </div>
+
+  <div class="career__scroll-track" id="careerTrack">
+    <div class="career__sticky" id="careerSticky">
+
+      <!-- Status line -->
+      <div class="career__status" id="careerStatus">
+        <div class="career__status__dot"></div>
+        <span id="statusText">Scroll to reveal</span>
+      </div>
+
+      <!-- Roadmap canvas -->
+      <div class="career__map">
+        <canvas id="roadCanvas"></canvas>
+        <div class="career__map-pins" id="careerPins"></div>
+      </div>
+
+      <!-- Detail summary box, directly below -->
+      <div class="career__detail" id="careerDetail">
+        <span class="career__detail-tag">Career</span>
+        <h2 class="career__detail-role" id="detailRole">—</h2>
+        <div class="career__detail-meta">
+          <span id="detailCo">—</span>
+          <span class="career__detail-meta-sep">·</span>
+          <span id="detailDate">—</span>
+        </div>
+        <div class="career__detail-rule"></div>
+        <p class="career__detail-desc" id="detailDesc">Scroll to begin revealing the roadmap of experience.</p>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="career__hint" id="careerHint">
+        <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
+          <path d="M6 0v10M1 6l5 6 5-6" stroke="#9E8E76" stroke-width="1.1"/>
+        </svg>
+        <span>Scroll</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="edu" id="education">
+  <div class="edu__inner">
+    <span class="label reveal">003 — Education</span>
+    <h2 class="edu__h2 reveal">Foundations of<br><em>knowledge.</em></h2>
+    <div class="edu__grid">
+      <div class="edu-card reveal" style="transition-delay:0.05s">
+        <div class="edu-card__year">2022 - 2025</div>
+        <div class="edu-card__logo"><img src="https://scontent.fman5-1.fna.fbcdn.net/v/t39.30808-6/278941949_7285037611538405_2811122903134778568_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=v7GU5u43gtgQ7kNvwFTLiZl&_nc_oc=AdlJJ0zZxpOyuRaSDyOJadM_eibSfLUyDCpwOjqaWBd2NO33sI8odhP8DUL8QFoL0Pk&_nc_zt=23&_nc_ht=scontent.fman5-1.fna&_nc_gid=EqPWQ0DcSETdIrfqTmddhQ&_nc_ss=8&oh=00_AfsjuY_9n93SVhFfT6j2r35nXRnIfDRKpWiPHmZn28DllA&oe=69A95E05" alt="University"/></div>
+        <h3>BSc Management</h3>
+        <p class="edu-card__inst">University of Manchester, AMBS</p>
+        <p class="edu-card__desc"></p>
+      </div>
+      <div class="edu-card reveal" style="transition-delay:0.25s">
+        <div class="edu-card__year">2025 - 2026</div>
+        <div class="edu-card__logo"><img src="https://scontent.fman5-1.fna.fbcdn.net/v/t39.30808-6/517016987_1148925507279343_1517029263031092237_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=P2S-NdHJfNMQ7kNvwHuagwD&_nc_oc=AdmWVVKWrnu29B1ZLTeFzWO_L7wZdmaG2BlkwUYfIkrq4BfSihOb7Gaq503o9vDL3Ws&_nc_zt=23&_nc_ht=scontent.fman5-1.fna&_nc_gid=iuyxCfr9WiTMW4cYigMydA&_nc_ss=8&oh=00_AfuG1dRmgRTxPJH_xuBxWGmswY_Kw27cLZ-EIcgiRyxz1g&oe=69A96B8A" alt="INSEAD"/></div>
+        <h3>MSc Strategic Marketing</h3>
+        <p class="edu-card__inst"><I>Imperial College London, ICBS</I></p>
+        <p class="edu-card__desc"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="ach" id="achievements">
+  <div class="ach__inner">
+    <span class="label reveal">004 — Achievements</span>
+    <h2 class="ach__h2 reveal">Extra<br><em>curricular.</em></h2>
+    <div>
+      <div class="ach-row reveal">
+        <span class="ach-row__year">December 2025</span><div class="ach-row__div"></div>
+        <div class="ach-row__body"><h3>Inside LVMH</h3><p>Awarded with a certificate for Creation & Branding, Retail & Customer Experience.</p></div>
+        <span class="ach-row__tag">Certificate</span>
+      </div>
+      <div class="ach-row reveal" style="transition-delay:0.32s">
+        <span class="ach-row__year">October 2024</span><div class="ach-row__div"></div>
+        <div class="ach-row__body"><h3>LSE Summer School: Spark</h3><p>Awarded with a Gold Micro-Credential.</p></div>
+        <span class="ach-row__tag">Certificate</span>
+      </div>
+      <div class="ach-row reveal" style="transition-delay:0.08s">
+        <span class="ach-row__year">2023 - 2024</span><div class="ach-row__div"></div>
+        <div class="ach-row__body"><h3>Treasurer for Manchester University Ballroom & Latin Society</h3><p>Awarded with SU Award: Activities & Culture Officers.</p></div>
+        <span class="ach-row__tag">Experience</span>
+      </div>
+      <div class="ach-row reveal" style="transition-delay:0.08s">
+        <span class="ach-row__year">October 2021</span><div class="ach-row__div"></div>
+        <div class="ach-row__body"><h3>The Duke of Edinburgh's International Award Foundation</h3><p>Awarded with a Silver Standard Certificate.</p></div>
+        <span class="ach-row__tag">Award</span>
+      </div>
+      <div class="ach-row reveal" style="transition-delay:0.16s">
+        <span class="ach-row__year">May 2021</span><div class="ach-row__div"></div>
+        <div class="ach-row__body"><h3>International Economics Olympiad</h3><p>China Open Round Individual Second Prize in Senior Level.</p></div>
+        <span class="ach-row__tag">Award</span>
+      </div>
+      <div class="ach-row reveal" style="transition-delay:0.24s">
+        <span class="ach-row__year">March 2021</span><div class="ach-row__div"></div>
+        <div class="ach-row__body"><h3>National Economics Challenge</h3><p>China Finals Critical Thinking Overall Team Bronze (Top 5%).</p></div>
+        <span class="ach-row__tag">Award</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="contact">
+  <div class="footer__inner">
+    <div class="footer__cta reveal">
+      <h2>Let's<br><em>talk.</em></h2>
+      <p>For opportunities, collaboration, or a quick chat, email me or connect on LinkedIn.</p>
+      <a href="/cdn-cgi/l/email-protection#c0a3eeada1afeeb5ab80afb5b4acafafabeea3afad" class="footer__email"><span class="__cf_email__" data-cfemail="492a67242826673c2209263c3d25262622672a2624">[email&#160;protected]</span></a>
+    </div>
+    <div class="footer__socials">
+      <a href="#">LinkedIn</a>
+    </div>
+    <div class="footer__base">
+      <span>© 2026 Chenyu Mao. All rights reserved.</span>
+      <span>Crafted with intention.</span>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ─── NAV ─────────────────────────────────────────────────── */
+(function(){
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+})();
+
+/* ─── SCROLL REVEAL ───────────────────────────────────────── */
+(function(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+/* ─── CAREER ROADMAP ──────────────────────────────────────── */
+(function(){
+  'use strict';
+
+  // ── Career data — edit to personalise ─────────────────────
+  const JOBS = [
+    {
+      date: '2021',
+      role: 'Operation & HR Intern',
+      co: 'Midea Group',
+      location: 'Guangdong, China',
+      desc: 'Supported HR operations and process optimisation across one of China\'s largest home appliance manufacturers. Gained foundational experience in large-scale corporate operations and people management.',
+      logo: 'https://media.licdn.com/dms/image/v2/D560BAQGbN_32wbkl3g/company-logo_100_100/company-logo_100_100/0/1718263397343/mideagroup_logo?e=1773878400&v=beta&t=U-8NC4DTh04ifuboImvC8sGCVmMVJwoGGKnwAp6d7OI',
+    },
+    {
+      date: '2023',
+      role: 'Tax & Business Advisory Intern',
+      co: 'Deloitte',
+      location: 'Shanghai, China',
+      desc: 'Delivered tax advisory and business analysis for multinational clients. Developed cross-functional skills in financial consulting within a Big Four environment, advising on regulatory compliance and strategic restructuring.',
+      logo: 'https://media.licdn.com/dms/image/v2/C560BAQGNtpblgQpJoQ/company-logo_100_100/company-logo_100_100/0/1662120928214/deloitte_logo?e=1773878400&v=beta&t=hIFyn8FVZLxCMjTxIC6COPMYFEWsbD1vR1NNkkmIrc0',
+    },
+    {
+      date: '2024',
+      role: 'Business Analysis Intern',
+      co: 'PwC UK',
+      location: 'Cardiff, UK',
+      desc: 'Embedded in PwC\'s Operate division, conducting business analysis and process improvement for public sector clients. First UK professional experience, navigating cross-cultural stakeholder environments with precision.',
+      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQGssTbQToR78w/company-logo_100_100/B4EZpZ2G8VHcAQ-/0/1762443948226/pwc_uk_logo?e=1773878400&v=beta&t=2S6tTL5tHL9s3ReWPijMdn1Yt2yZ1sSSDYg7vqhpKvA',
+    },
+    {
+      date: '2026',
+      role: 'Marketing & Social Media Intern',
+      co: 'LegacyX UK',
+      location: 'London, UK',
+      desc: 'Leading social media strategy and brand content for a forward-thinking UK creative agency. Executing campaigns that bridge cultural audiences across digital platforms and drive measurable engagement growth.',
+      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA',
+    },
+    {
+      date: 'Coming Soon',
+      role: 'Future Brand Marketing Director',
+      co: 'LVMH',
+      location: 'London, UK',
+      desc: 'An aspiration grounded in rigorous training — to lead brand strategy and cultural storytelling for one of the world\'s most revered luxury conglomerates. Where craft, heritage and modernity converge.',
+      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQG0ZjiacH285Q/company-logo_200_200/B4EZkPHY7tGcAY-/0/1756895219832/lvmh_logo?e=1773878400&v=beta&t=6cIIg3pEt40pgCOQZam0ppm_Qi0TbS_3k9NLdArOmSM',
+    },
+    {
+      date: 'Coming Soon',
+      role: 'Wife, Mother',
+      co: 'Home',
+      location: 'Manchester, UK',
+      desc: 'The role that matters most — building a life of warmth, presence, and intention alongside those I love. The truest measure of a life well lived.',
+      logo: 'https://media.licdn.com/dms/image/v2/C5603AQHIyoQPDOkIDg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1563789157004?e=1773878400&v=beta&t=HkhxvdmYPAKYg_irLxXggc1ui1VewYjfJuo9qCrB6Sc',
+    },
+  ];
+
+  // ── DOM ────────────────────────────────────────────────────
+  const canvas      = document.getElementById('roadCanvas');
+  const ctx         = canvas.getContext('2d');
+  const track       = document.getElementById('careerTrack');
+  const pinsEl      = document.getElementById('careerPins');
+  const hintEl      = document.getElementById('careerHint');
+  const statusText  = document.getElementById('statusText');
+  const detailPanel = document.getElementById('careerDetail');
+  const detailRole  = document.getElementById('detailRole');
+  const detailCo    = document.getElementById('detailCo');
+  const detailDate  = document.getElementById('detailDate');
+  const detailDesc  = document.getElementById('detailDesc');
+
+  let W, H, lastActive = -1;
+
+  // ── Road path: ascending left → right ────────────────────
+  const ROAD = [
+    { nx:0.00, ny:0.82 }, { nx:0.04, ny:0.80 }, { nx:0.09, ny:0.76 },
+    { nx:0.14, ny:0.73 }, { nx:0.19, ny:0.70 }, { nx:0.24, ny:0.67 },
+    { nx:0.29, ny:0.64 }, { nx:0.34, ny:0.61 }, { nx:0.38, ny:0.57 },
+    { nx:0.43, ny:0.53 }, { nx:0.48, ny:0.50 }, { nx:0.53, ny:0.47 },
+    { nx:0.58, ny:0.44 }, { nx:0.63, ny:0.41 }, { nx:0.67, ny:0.38 },
+    { nx:0.72, ny:0.35 }, { nx:0.77, ny:0.32 }, { nx:0.82, ny:0.29 },
+    { nx:0.87, ny:0.27 }, { nx:0.92, ny:0.25 }, { nx:0.97, ny:0.23 },
+    { nx:1.04, ny:0.21 },
+  ];
+
+  const JOB_NX = [0.09, 0.24, 0.43, 0.58, 0.77, 0.92];
+
+  function roadY(nx) {
+    for (let i = 0; i < ROAD.length - 1; i++) {
+      const a = ROAD[i], b = ROAD[i+1];
+      if (nx >= a.nx && nx <= b.nx) {
+        const t = (nx - a.nx) / (b.nx - a.nx);
+        return (a.ny + t * (b.ny - a.ny)) * H;
+      }
+    }
+    return H * 0.5;
+  }
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width  = W * devicePixelRatio;
+    canvas.height = H * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+
+  // ── Terrain: soft rolling hills ──────────────────────────
+  function drawTerrain() {
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#EDE5D0');
+    bg.addColorStop(1, '#E2D6BE');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    const layers = [
+      { pts:[[0,0.52],[0.18,0.42],[0.40,0.48],[0.62,0.40],[0.82,0.46],[1,0.44]], fill:'rgba(210,196,170,0.65)' },
+      { pts:[[0,0.63],[0.14,0.55],[0.32,0.60],[0.52,0.53],[0.72,0.58],[0.88,0.55],[1,0.57]], fill:'rgba(192,176,148,0.6)' },
+      { pts:[[0,0.78],[0.10,0.71],[0.28,0.75],[0.48,0.69],[0.68,0.73],[0.86,0.70],[1,0.72]], fill:'rgba(176,158,128,0.55)' },
+    ];
+
+    layers.forEach(layer => {
+      ctx.beginPath();
+      ctx.moveTo(0, H);
+      layer.pts.forEach(([nx, ny], idx) => {
+        const x = nx * W, y = ny * H;
+        if (idx === 0) { ctx.lineTo(x, y); return; }
+        const prev = layer.pts[idx - 1];
+        const mx = (prev[0]*W + x) / 2;
+        ctx.bezierCurveTo(mx, prev[1]*H, mx, y, x, y);
+      });
+      ctx.lineTo(W, H);
+      ctx.closePath();
+      ctx.fillStyle = layer.fill;
+      ctx.fill();
+    });
+  }
+
+  // ── Road line drawn up to revealX ────────────────────────
+  function drawRoad(revealX) {
+    const pts = ROAD.map(p => ({ x: p.nx * W, y: p.ny * H }));
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, 0, revealX, H);
+    ctx.clip();
+
+    // Subtle shadow
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y + 2);
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p = pts[i], n = pts[i+1];
+      const mx = (p.x + n.x) / 2;
+      ctx.bezierCurveTo(mx, p.y+2, mx, n.y+2, n.x, n.y+2);
+    }
+    ctx.strokeStyle = 'rgba(42,32,23,0.08)';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // Road line
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 0; i < pts.length - 1; i++) {
+      const p = pts[i], n = pts[i+1];
+      const mx = (p.x + n.x) / 2;
+      ctx.bezierCurveTo(mx, p.y, mx, n.y, n.x, n.y);
+    }
+    ctx.strokeStyle = '#7A6A52';
+    ctx.lineWidth = 1.5;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    ctx.restore();
+
+    // Very soft fog over unrevealed right portion
+    if (revealX < W) {
+      const fog = ctx.createLinearGradient(revealX - 40, 0, revealX + 100, 0);
+      fog.addColorStop(0, 'rgba(237,229,208,0)');
+      fog.addColorStop(1, 'rgba(237,229,208,0.82)');
+      ctx.fillStyle = fog;
+      ctx.fillRect(revealX - 40, 0, 140, H);
+      ctx.fillStyle = 'rgba(237,229,208,0.82)';
+      ctx.fillRect(revealX + 100, 0, W, H);
+    }
+  }
+
+  function drawScene(revealX) {
+    ctx.clearRect(0, 0, W, H);
+    drawTerrain();
+    drawRoad(revealX);
+  }
+
+  // ── Build pin DOM ─────────────────────────────────────────
+  function buildPins() {
+    pinsEl.innerHTML = '';
+    JOBS.forEach((job, i) => {
+      const nx = JOB_NX[i];
+      const pin = document.createElement('div');
+      pin.className = 'rpin';
+      pin.id = `rpin-${i}`;
+      pin.style.left = `${nx * W}px`;
+      pin.style.top  = `${roadY(nx)}px`;
+      pin.innerHTML = `
+        <div class="rpin__node"></div>
+        <div class="rpin__logo"><img src="${job.logo}" alt="${job.co}" loading="lazy"/></div>
+        <div class="rpin__label">
+          <span class="rpin__label-date">${job.date}</span>
+          <span class="rpin__label-role">${job.role}</span>
+          <span class="rpin__label-co">${job.co}</span>
+        </div>`;
+      pinsEl.appendChild(pin);
+    });
+  }
+
+  // ── Update detail panel ───────────────────────────────────
+  function updateDetail(idx) {
+    if (idx === lastActive) return;
+    lastActive = idx;
+    const job = JOBS[idx];
+    detailPanel.classList.add('swapping');
+    setTimeout(() => {
+      detailRole.textContent = job.role;
+      detailCo.textContent   = job.co;
+      detailDate.textContent = job.date + (job.location ? ' — ' + job.location : '');
+      detailDesc.textContent = job.desc;
+      detailPanel.classList.remove('swapping');
+    }, 180);
+  }
+
+  // ── Scroll progress ───────────────────────────────────────
+  function getProgress() {
+    const rect  = track.getBoundingClientRect();
+    const total = track.offsetHeight - window.innerHeight;
+    return Math.max(0, Math.min(1, -rect.top / total));
+  }
+
+  function update() {
+    const p = getProgress();
+    drawScene(p * W);
+
+    let activeIdx = -1;
+    JOBS.forEach((_, i) => {
+      const pin = document.getElementById(`rpin-${i}`);
+      if (!pin) return;
+      const show = p >= JOB_NX[i] - 0.04;
+      pin.classList.toggle('show', show);
+      if (show) activeIdx = i;
+    });
+
+    JOBS.forEach((_, i) => {
+      const pin = document.getElementById(`rpin-${i}`);
+      if (pin) pin.classList.toggle('active', i === activeIdx);
+    });
+
+    if (activeIdx >= 0) updateDetail(activeIdx);
+
+    const allDone = activeIdx === JOBS.length - 1;
+    statusText.textContent = allDone
+      ? 'Roadmap revealed — continue scrolling'
+      : activeIdx >= 0
+        ? `${activeIdx + 1} of ${JOBS.length} — ${JOBS[activeIdx].co}`
+        : 'Scroll to reveal';
+
+    hintEl.classList.toggle('hidden', p > 0.06);
+  }
+
+  function init() { resize(); buildPins(); update(); }
+
+  window.addEventListener('scroll', update, { passive: true });
