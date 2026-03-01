@@ -516,7 +516,8 @@ body::after {
     { date:'2021', role:'Operation & HR Intern',          co:'Midea Group',   flag:'https://media.licdn.com/dms/image/v2/D560BAQGbN_32wbkl3g/company-logo_100_100/company-logo_100_100/0/1718263397343/mideagroup_logo?e=1773878400&v=beta&t=U-8NC4DTh04ifuboImvC8sGCVmMVJwoGGKnwAp6d7OI', country:'CN' },
     { date:'2023', role:'Tax & Business Advisory Intern', co:'Deloitte',       flag:'https://media.licdn.com/dms/image/v2/C560BAQGNtpblgQpJoQ/company-logo_100_100/company-logo_100_100/0/1662120928214/deloitte_logo?e=1773878400&v=beta&t=hIFyn8FVZLxCMjTxIC6COPMYFEWsbD1vR1NNkkmIrc0', country:'CN' },
     { date:'2024', role:'Business Analysis Intern',       co:'PwC UK',         flag:'https://media.licdn.com/dms/image/v2/D4E0BAQGssTbQToR78w/company-logo_100_100/B4EZpZ2G8VHcAQ-/0/1762443948226/pwc_uk_logo?e=1773878400&v=beta&t=2S6tTL5tHL9s3ReWPijMdn1Yt2yZ1sSSDYg7vqhpKvA', country:'UK' },
-    { date:'2026', role:'Marketing & Social Media Intern',co:'LegacyX UK',     flag:'https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA', country:'UK' }
+    { date:'2026', role:'Marketing & Social Media Intern',co:'LegacyX UK',     flag:'https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA', country:'UK' },
+    { date:'COMING SOON', role:'Upcoming Roles', co:'Your Company', flag:'https://i0.wp.com/groundedcuriosity.com/wp-content/uploads/2016/09/bigstock-sunrise-of-earth-blue-shining-85817558.jpg?w=3510&quality=89&ssl=1', country:'UK' }
   ];
 
   const canvas   = document.getElementById('mtnCanvas');
@@ -546,7 +547,7 @@ body::after {
   ];
 
   // X positions for each flag (normalised)
-  const FLAG_NX = [0.12, 0.25, 0.42, 0.56, 0.68, 0.87];
+  const FLAG_NX = [0.12, 0.25, 0.42, 0.56, 0.66, 0.87];
 
   function ridgeY(nx) {
     for (let i = 0; i < RIDGE.length - 1; i++) {
