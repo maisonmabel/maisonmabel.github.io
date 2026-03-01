@@ -155,233 +155,101 @@ body::after {
 .about__img--b { width: 58%; height: 58%; bottom: 0; left: 0; border: 6px solid var(--parchment); box-shadow: 0 24px 60px rgba(42,32,23,0.14); }
 
 /* ═══════════════════════════════════════════════════
-   CAREER — ROADMAP (single-column, canvas + detail below)
+   CAREER — MOUNTAIN TIMELINE
 ═══════════════════════════════════════════════════ */
 .career { background: var(--cream); border-top: 1px solid var(--sand); }
-
 .career__intro {
-  max-width: 860px;
+  max-width: 1260px;
   margin: 0 auto;
-  padding: 9rem 8vw 4rem;
+  padding: 9rem 8vw 5rem;
 }
 .career__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 1rem; }
 .career__h2 em { font-style: italic; color: var(--bark); }
-.career__sub { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.career__sub { font-size: 0.75rem; letter-spacing: 0.15em; color: var(--muted); }
 
-/* The scroll track is tall enough to animate through all jobs */
-.career__scroll-track { height: 500vh; position: relative; }
-
+/* Sticky scroll container — tall so user scrolls through it */
+.career__scroll-track { height: 450vh; position: relative; }
 .career__sticky {
   position: sticky;
   top: 0;
   width: 100%;
   height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 5rem 8vw 2rem;
-  gap: 0;
   overflow: hidden;
 }
 
-/* Status line */
-.career__status {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: var(--ff-body);
-  font-size: 0.55rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 0.8rem;
-  align-self: flex-start;
-  width: 100%;
-  max-width: 860px;
-}
-.career__status__dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--bark);
-  flex-shrink: 0;
-  animation: statusPulse 2.4s ease-in-out infinite;
-}
-@keyframes statusPulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.3; transform:scale(0.6); } }
+#mtnCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.career__pins { position: absolute; inset: 0; pointer-events: none; }
 
-/* Canvas card — full width, contained */
-.career__map {
-  position: relative;
-  width: 100%;
-  max-width: 860px;
-  height: 320px;
-  background: var(--parchment);
-  border: 1px solid var(--sand);
-  border-radius: 10px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-#roadCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.career__map-pins { position: absolute; inset: 0; pointer-events: none; }
-
-/* Road node pins */
-.rpin {
+/* ── Flag pin ── */
+.pin {
   position: absolute;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
+  transform: translateX(-50%);
   pointer-events: none;
 }
-.rpin__node {
-  width: 10px; height: 10px;
+.pin__card {
+  background: rgba(245,240,232,0.95);
+  border: 1px solid var(--sand);
+  padding: 0.8rem 1.1rem;
+  min-width: 155px;
+  max-width: 195px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 30px rgba(42,32,23,0.12);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+.pin.show .pin__card { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
+
+.pin__date { display: block; font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
+.pin__role { display: block; font-family: var(--ff-display); font-size: 1rem; font-weight: 400; color: var(--ink); line-height: 1.25; margin-bottom: 0.2rem; }
+.pin__co { display: block; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bark); }
+
+.pin__flag {
+  width: 46px; height: 46px;
   border-radius: 50%;
-  border: 1.5px solid var(--bark);
+  overflow: hidden;
+  border: 2.5px solid var(--bark);
   background: var(--parchment);
   flex-shrink: 0;
+  margin-top: 0;
+  box-shadow: 0 4px 18px rgba(42,32,23,0.22);
   opacity: 0;
   transform: scale(0);
-  transition: opacity 0.3s var(--ease-out), transform 0.3s var(--ease-out);
+  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
 }
-.rpin.show .rpin__node { opacity: 1; transform: scale(1); }
-.rpin.active .rpin__node { background: var(--bark); box-shadow: 0 0 0 3px rgba(122,106,82,0.15); }
+.pin.show .pin__flag { opacity: 1; transform: scale(1); transition-delay: 0.4s; }
+.pin__flag img { width: 100%; height: 100%; object-fit: cover; }
 
-.rpin__logo {
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  border: 1px solid var(--sand);
-  background: var(--cream);
-  overflow: hidden;
-  margin-top: 4px;
-  opacity: 0;
-  transform: scale(0);
-  box-shadow: 0 1px 6px rgba(42,32,23,0.1);
-  transition: opacity 0.3s var(--ease-out) 0.1s, transform 0.3s var(--ease-out) 0.1s;
-}
-.rpin.show .rpin__logo { opacity: 1; transform: scale(1); }
-.rpin__logo img { width: 100%; height: 100%; object-fit: cover; }
-
-.rpin__label {
-  margin-top: 3px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(3px);
-  transition: opacity 0.3s var(--ease-out) 0.2s, transform 0.3s var(--ease-out) 0.2s;
-}
-.rpin.show .rpin__label { opacity: 1; transform: translateY(0); }
-.rpin__label-date {
-  display: block;
-  font-family: var(--ff-body);
-  font-size: 0.4rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--muted);
-  line-height: 1.5;
-}
-.rpin__label-role {
-  display: block;
-  font-family: var(--ff-display);
-  font-size: 0.62rem;
-  font-weight: 400;
-  color: var(--ink);
-  line-height: 1.2;
-  max-width: 80px;
-}
-.rpin__label-co {
-  display: block;
-  font-family: var(--ff-body);
-  font-size: 0.38rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--bark);
-}
-
-/* Detail panel — sits below canvas, full width */
-.career__detail {
-  width: 100%;
-  max-width: 860px;
-  margin-top: 1rem;
-  background: rgba(245,240,232,0.96);
-  border: 1px solid var(--sand);
-  border-radius: 10px;
-  padding: 1.4rem 2rem;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto auto auto;
-  gap: 0;
-  box-shadow: 0 2px 18px rgba(42,32,23,0.05);
+.pin__stem {
   flex-shrink: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--earth), transparent);
+  transform-origin: top center;
+  transform: scaleY(0);
+  transition: transform 0.6s var(--ease-out);
 }
-.career__detail-tag {
-  grid-column: 1 / -1;
-  display: inline-block;
-  font-family: var(--ff-body);
-  font-size: 0.48rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--bark);
-  border: 1px solid var(--sand);
-  padding: 0.22rem 0.7rem;
-  border-radius: 100px;
-  margin-bottom: 0.7rem;
-  justify-self: start;
-}
-.career__detail-role {
-  grid-column: 1;
-  font-family: var(--ff-display);
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  font-weight: 400;
-  color: var(--ink);
-  line-height: 1.15;
-  margin-bottom: 0.3rem;
-  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-  align-self: end;
-}
-.career__detail-meta {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--ff-body);
-  font-size: 0.65rem;
-  color: var(--muted);
-  letter-spacing: 0.04em;
-  margin-bottom: 0.75rem;
-  flex-wrap: wrap;
-}
-.career__detail-meta-sep { color: var(--sand); }
-.career__detail-rule { grid-column: 1 / -1; width: 100%; height: 1px; background: var(--sand); margin-bottom: 0.75rem; }
-.career__detail-desc {
-  grid-column: 1 / -1;
-  font-family: var(--ff-body);
-  font-size: 0.78rem;
-  color: var(--bark);
-  line-height: 1.8;
-  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease);
-}
-
-/* Swap animation */
-.career__detail.swapping .career__detail-role,
-.career__detail.swapping .career__detail-desc { opacity: 0; transform: translateY(4px); }
+.pin.show .pin__stem { transform: scaleY(1); transition-delay: 0.1s; }
 
 /* Scroll hint */
 .career__hint {
   position: absolute;
-  bottom: 1.8rem;
+  bottom: 2.5rem;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  font-family: var(--ff-body);
-  font-size: 0.52rem;
-  letter-spacing: 0.22em;
+  gap: 0.6rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--muted);
   pointer-events: none;
   transition: opacity 0.5s;
-  z-index: 10;
-  white-space: nowrap;
 }
 .career__hint svg { animation: bob 2s ease-in-out infinite; }
 .career__hint.hidden { opacity: 0; }
@@ -448,10 +316,7 @@ body::after {
   .hero__frame::after { display: none; }
   .about__inner { grid-template-columns: 1fr; }
   .about__imgs { display: none; }
-  .career__sticky { padding: 3.5rem 5vw 2rem; }
-  .career__map { height: 220px; }
-  .career__detail { padding: 1.2rem 1.4rem; }
-  .career__detail-role { font-size: 1.1rem; }
+  .career__sticky { overflow: hidden; }
   .ach-row { grid-template-columns: 1fr; gap: 0.8rem; }
   .ach-row__div { display: none; }
   .footer__base { flex-direction: column; gap: 0.5rem; text-align: center; }
@@ -519,7 +384,7 @@ body::after {
 
 <!-- CAREER — ROADMAP -->
 <section class="career" id="career">
-  <div class="career__intro reveal">
+  <div class="career__intro">
     <span class="label">002 — Career</span>
     <h2 class="career__h2">The journey<br><em>so far.</em></h2>
     <p class="career__sub">Scroll to traverse the roadmap of experience.</p>
@@ -527,38 +392,13 @@ body::after {
 
   <div class="career__scroll-track" id="careerTrack">
     <div class="career__sticky" id="careerSticky">
-
-      <!-- Status line -->
-      <div class="career__status" id="careerStatus">
-        <div class="career__status__dot"></div>
-        <span id="statusText">Scroll to reveal</span>
-      </div>
-
-      <!-- Roadmap canvas -->
-      <div class="career__map">
-        <canvas id="roadCanvas"></canvas>
-        <div class="career__map-pins" id="careerPins"></div>
-      </div>
-
-      <!-- Detail summary box, directly below -->
-      <div class="career__detail" id="careerDetail">
-        <span class="career__detail-tag">Career</span>
-        <h2 class="career__detail-role" id="detailRole">—</h2>
-        <div class="career__detail-meta">
-          <span id="detailCo">—</span>
-          <span class="career__detail-meta-sep">·</span>
-          <span id="detailDate">—</span>
-        </div>
-        <div class="career__detail-rule"></div>
-        <p class="career__detail-desc" id="detailDesc">Scroll to begin revealing the roadmap of experience.</p>
-      </div>
-
-      <!-- Scroll hint -->
+      <canvas id="mtnCanvas"></canvas>
+      <div class="career__pins" id="careerPins"></div>
       <div class="career__hint" id="careerHint">
-        <svg width="12" height="14" viewBox="0 0 12 14" fill="none">
-          <path d="M6 0v10M1 6l5 6 5-6" stroke="#9E8E76" stroke-width="1.1"/>
+        <span>Scroll to reveal</span>
+        <svg width="12" height="18" viewBox="0 0 12 18" fill="none">
+          <path d="M6 0v14M1 10l5 6 5-6" stroke="#9E8E76" stroke-width="1.1"/>
         </svg>
-        <span>Scroll</span>
       </div>
     </div>
   </div>
@@ -665,97 +505,57 @@ body::after {
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 
-/* ─── CAREER ROADMAP ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════
+   MOUNTAIN CAREER TIMELINE
+═══════════════════════════════════════════════════ */
 (function(){
   'use strict';
 
-  // ── Career data — edit to personalise ─────────────────────
+  // ── Career data — edit this to personalise ──────────────────────────────
   const JOBS = [
-    {
-      date: '2021',
-      role: 'Operation & HR Intern',
-      co: 'Midea Group',
-      location: 'Guangdong, China',
-      desc: 'Supported HR operations and process optimisation across one of China\'s largest home appliance manufacturers. Gained foundational experience in large-scale corporate operations and people management.',
-      logo: 'https://media.licdn.com/dms/image/v2/D560BAQGbN_32wbkl3g/company-logo_100_100/company-logo_100_100/0/1718263397343/mideagroup_logo?e=1773878400&v=beta&t=U-8NC4DTh04ifuboImvC8sGCVmMVJwoGGKnwAp6d7OI',
-    },
-    {
-      date: '2023',
-      role: 'Tax & Business Advisory Intern',
-      co: 'Deloitte',
-      location: 'Shanghai, China',
-      desc: 'Delivered tax advisory and business analysis for multinational clients. Developed cross-functional skills in financial consulting within a Big Four environment, advising on regulatory compliance and strategic restructuring.',
-      logo: 'https://media.licdn.com/dms/image/v2/C560BAQGNtpblgQpJoQ/company-logo_100_100/company-logo_100_100/0/1662120928214/deloitte_logo?e=1773878400&v=beta&t=hIFyn8FVZLxCMjTxIC6COPMYFEWsbD1vR1NNkkmIrc0',
-    },
-    {
-      date: '2024',
-      role: 'Business Analysis Intern',
-      co: 'PwC UK',
-      location: 'Cardiff, UK',
-      desc: 'Embedded in PwC\'s Operate division, conducting business analysis and process improvement for public sector clients. First UK professional experience, navigating cross-cultural stakeholder environments with precision.',
-      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQGssTbQToR78w/company-logo_100_100/B4EZpZ2G8VHcAQ-/0/1762443948226/pwc_uk_logo?e=1773878400&v=beta&t=2S6tTL5tHL9s3ReWPijMdn1Yt2yZ1sSSDYg7vqhpKvA',
-    },
-    {
-      date: '2026',
-      role: 'Marketing & Social Media Intern',
-      co: 'LegacyX UK',
-      location: 'London, UK',
-      desc: 'Leading social media strategy and brand content for a forward-thinking UK creative agency. Executing campaigns that bridge cultural audiences across digital platforms and drive measurable engagement growth.',
-      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA',
-    },
-    {
-      date: 'Coming Soon',
-      role: 'Future Brand Marketing Director',
-      co: 'LVMH',
-      location: 'London, UK',
-      desc: 'An aspiration grounded in rigorous training — to lead brand strategy and cultural storytelling for one of the world\'s most revered luxury conglomerates. Where craft, heritage and modernity converge.',
-      logo: 'https://media.licdn.com/dms/image/v2/D4E0BAQG0ZjiacH285Q/company-logo_200_200/B4EZkPHY7tGcAY-/0/1756895219832/lvmh_logo?e=1773878400&v=beta&t=6cIIg3pEt40pgCOQZam0ppm_Qi0TbS_3k9NLdArOmSM',
-    },
-    {
-      date: 'Coming Soon',
-      role: 'Wife, Mother',
-      co: 'Home',
-      location: 'Manchester, UK',
-      desc: 'The role that matters most — building a life of warmth, presence, and intention alongside those I love. The truest measure of a life well lived.',
-      logo: 'https://media.licdn.com/dms/image/v2/C5603AQHIyoQPDOkIDg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1563789157004?e=1773878400&v=beta&t=HkhxvdmYPAKYg_irLxXggc1ui1VewYjfJuo9qCrB6Sc',
-    },
+    { date:'2021', role:'Operation & HR Intern',          co:'Midea Group',   flag:'https://media.licdn.com/dms/image/v2/D560BAQGbN_32wbkl3g/company-logo_100_100/company-logo_100_100/0/1718263397343/mideagroup_logo?e=1773878400&v=beta&t=U-8NC4DTh04ifuboImvC8sGCVmMVJwoGGKnwAp6d7OI', country:'CN' },
+    { date:'2023', role:'Tax & Business Advisory Intern', co:'Deloitte',       flag:'https://media.licdn.com/dms/image/v2/C560BAQGNtpblgQpJoQ/company-logo_100_100/company-logo_100_100/0/1662120928214/deloitte_logo?e=1773878400&v=beta&t=hIFyn8FVZLxCMjTxIC6COPMYFEWsbD1vR1NNkkmIrc0', country:'CN' },
+    { date:'2024', role:'Business Analysis Intern',       co:'PwC UK',         flag:'https://media.licdn.com/dms/image/v2/D4E0BAQGssTbQToR78w/company-logo_100_100/B4EZpZ2G8VHcAQ-/0/1762443948226/pwc_uk_logo?e=1773878400&v=beta&t=2S6tTL5tHL9s3ReWPijMdn1Yt2yZ1sSSDYg7vqhpKvA', country:'UK' },
+    { date:'2026', role:'Marketing & Social Media Intern',co:'LegacyX UK',     flag:'https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA', country:'UK' },
+    { date:'Coming Soon', role:'Brand Marketing Director',co:'LVMH',           flag:'https://media.licdn.com/dms/image/v2/D4E0BAQG0ZjiacH285Q/company-logo_200_200/B4EZkPHY7tGcAY-/0/1756895219832/lvmh_logo?e=1773878400&v=beta&t=6cIIg3pEt40pgCOQZam0ppm_Qi0TbS_3k9NLdArOmSM', country:'FR' },
+    { date:'Coming Soon', role:'Wife, Mother',             co:'Home',           flag:'https://media.licdn.com/dms/image/v2/C5603AQHIyoQPDOkIDg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1563789157004?e=1773878400&v=beta&t=HkhxvdmYPAKYg_irLxXggc1ui1VewYjfJuo9qCrB6Sc', country:'♡' },
   ];
 
-  // ── DOM ────────────────────────────────────────────────────
-  const canvas      = document.getElementById('roadCanvas');
-  const ctx         = canvas.getContext('2d');
-  const track       = document.getElementById('careerTrack');
-  const pinsEl      = document.getElementById('careerPins');
-  const hintEl      = document.getElementById('careerHint');
-  const statusText  = document.getElementById('statusText');
-  const detailPanel = document.getElementById('careerDetail');
-  const detailRole  = document.getElementById('detailRole');
-  const detailCo    = document.getElementById('detailCo');
-  const detailDate  = document.getElementById('detailDate');
-  const detailDesc  = document.getElementById('detailDesc');
+  const canvas   = document.getElementById('mtnCanvas');
+  const ctx      = canvas.getContext('2d');
+  const track    = document.getElementById('careerTrack');
+  const pinsEl   = document.getElementById('careerPins');
+  const hintEl   = document.getElementById('careerHint');
 
-  let W, H, lastActive = -1;
+  let W, H;
 
-  // ── Road path: ascending left → right ────────────────────
-  const ROAD = [
-    { nx:0.00, ny:0.82 }, { nx:0.04, ny:0.80 }, { nx:0.09, ny:0.76 },
-    { nx:0.14, ny:0.73 }, { nx:0.19, ny:0.70 }, { nx:0.24, ny:0.67 },
-    { nx:0.29, ny:0.64 }, { nx:0.34, ny:0.61 }, { nx:0.38, ny:0.57 },
-    { nx:0.43, ny:0.53 }, { nx:0.48, ny:0.50 }, { nx:0.53, ny:0.47 },
-    { nx:0.58, ny:0.44 }, { nx:0.63, ny:0.41 }, { nx:0.67, ny:0.38 },
-    { nx:0.72, ny:0.35 }, { nx:0.77, ny:0.32 }, { nx:0.82, ny:0.29 },
-    { nx:0.87, ny:0.27 }, { nx:0.92, ny:0.25 }, { nx:0.97, ny:0.23 },
-    { nx:1.04, ny:0.21 },
+  // ── Mountain silhouette control points (normalised 0–1) ─────────────────
+  const RIDGE = [
+    { nx:0.00,  ny:0.78 },
+    { nx:0.07,  ny:0.62 },
+    { nx:0.15,  ny:0.40 }, // peak A
+    { nx:0.23,  ny:0.58 },
+    { nx:0.33,  ny:0.55 },
+    { nx:0.42,  ny:0.26 }, // peak B — tallest
+    { nx:0.50,  ny:0.50 },
+    { nx:0.58,  ny:0.46 },
+    { nx:0.66,  ny:0.30 }, // peak C
+    { nx:0.74,  ny:0.53 },
+    { nx:0.80,  ny:0.50 },
+    { nx:0.88,  ny:0.36 }, // peak D
+    { nx:0.96,  ny:0.57 },
+    { nx:1.04,  ny:0.70 },
   ];
 
-  const JOB_NX = [0.09, 0.24, 0.43, 0.58, 0.77, 0.92];
+  // X positions for each flag (normalised)
+  const FLAG_NX = [0.12, 0.25, 0.42, 0.56, 0.68, 0.87];
 
-  function roadY(nx) {
-    for (let i = 0; i < ROAD.length - 1; i++) {
-      const a = ROAD[i], b = ROAD[i+1];
+  function ridgeY(nx) {
+    for (let i = 0; i < RIDGE.length - 1; i++) {
+      const a = RIDGE[i], b = RIDGE[i+1];
       if (nx >= a.nx && nx <= b.nx) {
         const t = (nx - a.nx) / (b.nx - a.nx);
-        return (a.ny + t * (b.ny - a.ny)) * H;
+        return (a.ny + t*(b.ny - a.ny)) * H;
       }
     }
     return H * 0.5;
@@ -763,172 +563,180 @@ body::after {
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
-    W = rect.width; H = rect.height;
+    W = rect.width;
+    H = rect.height;
     canvas.width  = W * devicePixelRatio;
     canvas.height = H * devicePixelRatio;
     ctx.scale(devicePixelRatio, devicePixelRatio);
   }
 
-  // ── Terrain: soft rolling hills ──────────────────────────
-  function drawTerrain() {
-    const bg = ctx.createLinearGradient(0, 0, 0, H);
-    bg.addColorStop(0, '#EDE5D0');
-    bg.addColorStop(1, '#E2D6BE');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    const layers = [
-      { pts:[[0,0.52],[0.18,0.42],[0.40,0.48],[0.62,0.40],[0.82,0.46],[1,0.44]], fill:'rgba(210,196,170,0.65)' },
-      { pts:[[0,0.63],[0.14,0.55],[0.32,0.60],[0.52,0.53],[0.72,0.58],[0.88,0.55],[1,0.57]], fill:'rgba(192,176,148,0.6)' },
-      { pts:[[0,0.78],[0.10,0.71],[0.28,0.75],[0.48,0.69],[0.68,0.73],[0.86,0.70],[1,0.72]], fill:'rgba(176,158,128,0.55)' },
-    ];
-
-    layers.forEach(layer => {
-      ctx.beginPath();
-      ctx.moveTo(0, H);
-      layer.pts.forEach(([nx, ny], idx) => {
-        const x = nx * W, y = ny * H;
-        if (idx === 0) { ctx.lineTo(x, y); return; }
-        const prev = layer.pts[idx - 1];
-        const mx = (prev[0]*W + x) / 2;
-        ctx.bezierCurveTo(mx, prev[1]*H, mx, y, x, y);
-      });
-      ctx.lineTo(W, H);
-      ctx.closePath();
-      ctx.fillStyle = layer.fill;
-      ctx.fill();
-    });
-  }
-
-  // ── Road line drawn up to revealX ────────────────────────
-  function drawRoad(revealX) {
-    const pts = ROAD.map(p => ({ x: p.nx * W, y: p.ny * H }));
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, 0, revealX, H);
-    ctx.clip();
-
-    // Subtle shadow
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y + 2);
-    for (let i = 0; i < pts.length - 1; i++) {
-      const p = pts[i], n = pts[i+1];
-      const mx = (p.x + n.x) / 2;
-      ctx.bezierCurveTo(mx, p.y+2, mx, n.y+2, n.x, n.y+2);
-    }
-    ctx.strokeStyle = 'rgba(42,32,23,0.08)';
-    ctx.lineWidth = 4;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.stroke();
-
-    // Road line
-    ctx.beginPath();
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (let i = 0; i < pts.length - 1; i++) {
-      const p = pts[i], n = pts[i+1];
-      const mx = (p.x + n.x) / 2;
-      ctx.bezierCurveTo(mx, p.y, mx, n.y, n.x, n.y);
-    }
-    ctx.strokeStyle = '#7A6A52';
-    ctx.lineWidth = 1.5;
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.stroke();
-
-    ctx.restore();
-
-    // Very soft fog over unrevealed right portion
-    if (revealX < W) {
-      const fog = ctx.createLinearGradient(revealX - 40, 0, revealX + 100, 0);
-      fog.addColorStop(0, 'rgba(237,229,208,0)');
-      fog.addColorStop(1, 'rgba(237,229,208,0.82)');
-      ctx.fillStyle = fog;
-      ctx.fillRect(revealX - 40, 0, 140, H);
-      ctx.fillStyle = 'rgba(237,229,208,0.82)';
-      ctx.fillRect(revealX + 100, 0, W, H);
-    }
-  }
-
   function drawScene(revealX) {
     ctx.clearRect(0, 0, W, H);
-    drawTerrain();
-    drawRoad(revealX);
+
+    // Sky
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0,   '#B8A48A');
+    sky.addColorStop(0.5, '#D4C4A8');
+    sky.addColorStop(1,   '#E8DBC8');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, H);
+
+    // Atmospheric fog bands
+    [0.38, 0.48, 0.56].forEach((yFrac, i) => {
+      const fy = yFrac * H;
+      const fg = ctx.createLinearGradient(0, fy-18, 0, fy+18);
+      fg.addColorStop(0, 'transparent');
+      fg.addColorStop(0.5, `rgba(232,220,200,${0.3 - i*0.06})`);
+      fg.addColorStop(1, 'transparent');
+      ctx.fillStyle = fg;
+      ctx.fillRect(0, fy-18, W, 36);
+    });
+
+    // Draw three mountain layers with depth
+    drawLayer(1.02, 0.82, 0.05, '#A49480', null);        // far bg
+    drawLayer(1.00, 0.90, 0.02, '#7A6655', '#E0D4BC88'); // mid
+    drawLayer(1.00, 1.00, 0.00, '#5C4A35', '#EDE5D0BB'); // fg + snow
+
+    // Ground / earth base
+    const gd = ctx.createLinearGradient(0, H*0.85, 0, H);
+    gd.addColorStop(0, 'transparent');
+    gd.addColorStop(1, '#2A2017');
+    ctx.fillStyle = gd;
+    ctx.fillRect(0, H*0.85, W, H*0.15);
+
+    // Vignette edges
+    const vg = ctx.createLinearGradient(0, 0, W, 0);
+    vg.addColorStop(0, 'rgba(42,32,23,0.25)');
+    vg.addColorStop(0.08, 'transparent');
+    vg.addColorStop(0.92, 'transparent');
+    vg.addColorStop(1, 'rgba(42,32,23,0.25)');
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Fog/reveal mask — right side fades out based on scroll
+    if (revealX < W) {
+      const edge = Math.max(0, revealX);
+      const mx = ctx.createLinearGradient(edge - 80, 0, edge + 60, 0);
+      mx.addColorStop(0, 'transparent');
+      mx.addColorStop(1, 'rgba(245,240,232,0.88)');
+      ctx.fillStyle = mx;
+      ctx.fillRect(edge - 80, 0, W - edge + 80, H);
+      ctx.fillStyle = 'rgba(245,240,232,0.88)';
+      ctx.fillRect(edge + 60, 0, W, H);
+    }
   }
 
-  // ── Build pin DOM ─────────────────────────────────────────
+  function drawLayer(scaleX, scaleY, shiftY, fill, snowColor) {
+    const pts = RIDGE.map(p => ({
+      x: p.nx * W * scaleX,
+      y: p.ny * H * scaleY + shiftY * H,
+    }));
+
+    ctx.beginPath();
+    ctx.moveTo(-20, H + 10);
+
+    const all = [{ x:-20, y:H+10 }, ...pts, { x:W+20, y:H+10 }];
+    for (let i = 1; i < all.length - 2; i++) {
+      const p0=all[i-1], p1=all[i], p2=all[i+1], p3=all[i+2];
+      const cp1x = p1.x + (p2.x - p0.x)/5.5;
+      const cp1y = p1.y + (p2.y - p0.y)/5.5;
+      const cp2x = p2.x - (p3.x - p1.x)/5.5;
+      const cp2y = p2.y - (p3.y - p1.y)/5.5;
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
+    }
+    ctx.lineTo(W+20, H+10);
+    ctx.closePath();
+
+    ctx.save();
+    ctx.shadowColor = 'rgba(0,0,0,0.12)';
+    ctx.shadowBlur  = 25;
+    ctx.fillStyle   = fill;
+    ctx.fill();
+    ctx.restore();
+
+    if (snowColor) {
+      pts.forEach(p => {
+        const snowR = (H - p.y) * 0.18;
+        if (snowR < 6) return;
+        const sg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, snowR * 2.8);
+        sg.addColorStop(0, snowColor);
+        sg.addColorStop(0.6, snowColor.replace('BB','44').replace('88','22'));
+        sg.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, snowR * 2.8, 0, Math.PI*2);
+        ctx.fillStyle = sg;
+        ctx.fill();
+      });
+    }
+  }
+
   function buildPins() {
     pinsEl.innerHTML = '';
     JOBS.forEach((job, i) => {
-      const nx = JOB_NX[i];
+      const nx    = FLAG_NX[i];
+      const px    = nx * W;
+      const peakY = ridgeY(nx);
+      const stemH = 70 + (i % 3) * 28;
+
       const pin = document.createElement('div');
-      pin.className = 'rpin';
-      pin.id = `rpin-${i}`;
-      pin.style.left = `${nx * W}px`;
-      pin.style.top  = `${roadY(nx)}px`;
+      pin.className = 'pin';
+      pin.id = `pin-${i}`;
+      pin.style.cssText = `left: ${px}px; top: ${peakY - stemH - 46}px;`;
+
       pin.innerHTML = `
-        <div class="rpin__node"></div>
-        <div class="rpin__logo"><img src="${job.logo}" alt="${job.co}" loading="lazy"/></div>
-        <div class="rpin__label">
-          <span class="rpin__label-date">${job.date}</span>
-          <span class="rpin__label-role">${job.role}</span>
-          <span class="rpin__label-co">${job.co}</span>
-        </div>`;
+        <div class="pin__card">
+          <span class="pin__date">${job.date}</span>
+          <span class="pin__role">${job.role}</span>
+          <span class="pin__co">${job.co}</span>
+        </div>
+        <div class="pin__flag">
+          <img src="${job.flag}" alt="${job.country}" loading="lazy"/>
+        </div>
+        <div class="pin__stem" style="height:${stemH}px;"></div>
+      `;
       pinsEl.appendChild(pin);
     });
   }
 
-  // ── Update detail panel ───────────────────────────────────
-  function updateDetail(idx) {
-    if (idx === lastActive) return;
-    lastActive = idx;
-    const job = JOBS[idx];
-    detailPanel.classList.add('swapping');
-    setTimeout(() => {
-      detailRole.textContent = job.role;
-      detailCo.textContent   = job.co;
-      detailDate.textContent = job.date + (job.location ? ' — ' + job.location : '');
-      detailDesc.textContent = job.desc;
-      detailPanel.classList.remove('swapping');
-    }, 180);
-  }
-
-  // ── Scroll progress ───────────────────────────────────────
   function getProgress() {
     const rect  = track.getBoundingClientRect();
     const total = track.offsetHeight - window.innerHeight;
-    return Math.max(0, Math.min(1, -rect.top / total));
+    const gone  = -rect.top;
+    return Math.max(0, Math.min(1, gone / total));
   }
 
   function update() {
     const p = getProgress();
-    drawScene(p * W);
+    const revealX = p * W;
 
-    let activeIdx = -1;
+    drawScene(revealX);
+
     JOBS.forEach((_, i) => {
-      const pin = document.getElementById(`rpin-${i}`);
+      const threshold = FLAG_NX[i] - 0.06;
+      const pin = document.getElementById(`pin-${i}`);
       if (!pin) return;
-      const show = p >= JOB_NX[i] - 0.04;
-      pin.classList.toggle('show', show);
-      if (show) activeIdx = i;
+      pin.classList.toggle('show', p >= threshold);
     });
 
-    JOBS.forEach((_, i) => {
-      const pin = document.getElementById(`rpin-${i}`);
-      if (pin) pin.classList.toggle('active', i === activeIdx);
-    });
-
-    if (activeIdx >= 0) updateDetail(activeIdx);
-
-    const allDone = activeIdx === JOBS.length - 1;
-    statusText.textContent = allDone
-      ? 'Roadmap revealed — continue scrolling'
-      : activeIdx >= 0
-        ? `${activeIdx + 1} of ${JOBS.length} — ${JOBS[activeIdx].co}`
-        : 'Scroll to reveal';
-
-    hintEl.classList.toggle('hidden', p > 0.06);
+    hintEl.classList.toggle('hidden', p > 0.08);
   }
 
-  function init() { resize(); buildPins(); update(); }
+  function init() {
+    resize();
+    buildPins();
+    update();
+  }
 
   window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', () => { resize(); buildPins(); update(); });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    requestAnimationFrame(init);
+  }
+
+})();
+</script>
+</body>
+</html>
