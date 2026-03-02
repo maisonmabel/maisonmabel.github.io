@@ -142,7 +142,7 @@ body::after {
    ABOUT
 ═══════════════════════════════════════════════════ */
 .about { padding: 9rem 8vw; background: var(--parchment); border-top: 1px solid var(--sand); }
-.about__inner { max-width: 1260px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; align-items: center; }
+.about__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 7vw; align-items: center; }
 .about__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 2rem; }
 .about__h2 em { font-style: italic; color: var(--bark); }
 .about__body p { font-size: 0.92rem; color: var(--bark); line-height: 1.9; margin-bottom: 1.2rem; }
@@ -157,31 +157,25 @@ body::after {
 /* ═══════════════════════════════════════════════════
    CAREER — VERTICAL TIMELINE
 ═══════════════════════════════════════════════════ */
-.career { background: var(--cream); border-top: 1px solid var(--sand); padding: 9rem 0; }
-.career__intro {
-  max-width: 1260px;
-  margin: 0 auto;
-  padding: 0 8vw 5rem;
-}
+.career { background: var(--cream); border-top: 1px solid var(--sand); padding: 9rem 8vw; }
+.career__intro { margin-bottom: 5rem; }
 .career__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 1rem; }
 .career__h2 em { font-style: italic; color: var(--bark); }
 .career__sub { font-size: 0.75rem; letter-spacing: 0.15em; color: var(--muted); }
 
-/* Timeline wrapper */
+/* Timeline — centred within the padded section */
 .career__timeline {
   position: relative;
-  max-width: 860px;
+  max-width: 680px;
   margin: 0 auto;
-  padding: 0 8vw;
 }
 
-/* Vertical line running through centre */
+/* Vertical line */
 .career__timeline::before {
   content: '';
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(8vw + 27px);
+  top: 0; bottom: 0;
+  left: 27px;
   width: 1px;
   background: linear-gradient(to bottom, transparent, var(--sand) 5%, var(--sand) 95%, transparent);
 }
@@ -292,7 +286,7 @@ body::after {
    EDUCATION
 ═══════════════════════════════════════════════════ */
 .edu { padding: 9rem 8vw; background: var(--parchment); border-top: 1px solid var(--sand); }
-.edu__inner { max-width: 1260px; margin: 0 auto; }
+.edu__inner { }
 .edu__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 4rem; }
 .edu__h2 em { font-style: italic; color: var(--bark); }
 .edu__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; }
@@ -311,7 +305,7 @@ body::after {
    ACHIEVEMENTS
 ═══════════════════════════════════════════════════ */
 .ach { padding: 9rem 8vw; background: var(--cream); border-top: 1px solid var(--sand); }
-.ach__inner { max-width: 1260px; margin: 0 auto; }
+.ach__inner { }
 .ach__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 4rem; }
 .ach__h2 em { font-style: italic; color: var(--bark); }
 .ach-row { display: grid; grid-template-columns: 68px 1px 1fr auto; align-items: start; gap: 2.2rem; padding: 2rem 1rem; margin: 0 -1rem; border-bottom: 1px solid var(--sand); transition: background 0.35s var(--ease); cursor: default; }
@@ -326,7 +320,7 @@ body::after {
    FOOTER
 ═══════════════════════════════════════════════════ */
 .footer { background: var(--charcoal); color: var(--sand); padding: 9rem 8vw 5rem; border-top: 1px solid var(--earth); }
-.footer__inner { max-width: 1260px; margin: 0 auto; }
+.footer__inner { }
 .footer__cta h2 { font-family: var(--ff-display); font-size: clamp(3rem, 5.5vw, 5.5rem); font-weight: 300; line-height: 1.08; color: var(--parchment); margin-bottom: 1.8rem; }
 .footer__cta h2 em { font-style: italic; color: var(--warm); }
 .footer__cta p { font-size: 0.9rem; color: var(--muted); max-width: 380px; line-height: 1.85; margin-bottom: 2.5rem; }
@@ -350,7 +344,7 @@ body::after {
   .hero__frame::after { display: none; }
   .about__inner { grid-template-columns: 1fr; }
   .about__imgs { display: none; }
-  .career__timeline::before { left: calc(8vw + 27px); }
+  .career__timeline::before { left: 27px; }
   .tl-item { gap: 0 1.6rem; }
   .ach-row { grid-template-columns: 1fr; gap: 0.8rem; }
   .ach-row__div { display: none; }
@@ -565,7 +559,7 @@ body::after {
     <div class="footer__cta reveal">
       <h2>Let's<br><em>talk.</em></h2>
       <p>For opportunities, collaboration, or a quick chat, email me or connect on LinkedIn.</p>
-      <a href="mailto:c.mao.uk@outlook.com">c.mao.uk@outlook.com</a>
+      <a href="mailto:c.mao.uk@outlook.com" class="footer__email">c.mao.uk@outlook.com</a>
     </div>
     <div class="footer__socials">
       <a href="https://www.linkedin.com/in/mabel-chenyu-mao/">LinkedIn</a>
@@ -577,7 +571,7 @@ body::after {
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ─── NAV ─────────────────────────────────────────────────── */
 (function(){
   const nav = document.getElementById('nav');
@@ -595,8 +589,6 @@ body::after {
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
-
-
 </script>
 </body>
 </html>
