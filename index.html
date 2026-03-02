@@ -155,104 +155,138 @@ body::after {
 .about__img--b { width: 58%; height: 58%; bottom: 0; left: 0; border: 6px solid var(--parchment); box-shadow: 0 24px 60px rgba(42,32,23,0.14); }
 
 /* ═══════════════════════════════════════════════════
-   CAREER — MOUNTAIN TIMELINE
+   CAREER — VERTICAL TIMELINE
 ═══════════════════════════════════════════════════ */
-.career { background: var(--cream); border-top: 1px solid var(--sand); }
+.career { background: var(--cream); border-top: 1px solid var(--sand); padding: 9rem 0; }
 .career__intro {
   max-width: 1260px;
   margin: 0 auto;
-  padding: 9rem 8vw 5rem;
+  padding: 0 8vw 5rem;
 }
 .career__h2 { font-family: var(--ff-display); font-size: clamp(2.6rem, 4vw, 4rem); font-weight: 300; line-height: 1.12; color: var(--ink); margin-bottom: 1rem; }
 .career__h2 em { font-style: italic; color: var(--bark); }
 .career__sub { font-size: 0.75rem; letter-spacing: 0.15em; color: var(--muted); }
 
-/* Sticky scroll container — tall so user scrolls through it */
-.career__scroll-track { height: 450vh; position: relative; }
-.career__sticky {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
+/* Timeline wrapper */
+.career__timeline {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 8vw;
 }
 
-#mtnCanvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.career__pins { position: absolute; inset: 0; pointer-events: none; }
-
-/* ── Flag pin ── */
-.pin {
+/* Vertical line running through centre */
+.career__timeline::before {
+  content: '';
   position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(8vw + 27px);
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--sand) 5%, var(--sand) 95%, transparent);
+}
+
+/* ── Each entry ── */
+.tl-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 0 2.4rem;
+  padding-bottom: 4.5rem;
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+.tl-item.in { opacity: 1; transform: translateY(0); }
+.tl-item:last-child { padding-bottom: 0; }
+
+/* Left col: logo + dot */
+.tl-item__left {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateX(-50%);
-  pointer-events: none;
+  gap: 0;
+  position: relative;
 }
-.pin__card {
-  background: rgba(245,240,232,0.95);
-  border: 1px solid var(--sand);
-  padding: 0.8rem 1.1rem;
-  min-width: 155px;
-  max-width: 195px;
-  text-align: center;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 8px 30px rgba(42,32,23,0.12);
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+
+/* Node dot on the line */
+.tl-item__node {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bark);
+  border: 2px solid var(--cream);
+  box-shadow: 0 0 0 1px var(--bark);
+  flex-shrink: 0;
+  margin-top: 8px;
+  position: relative;
+  z-index: 1;
 }
-.pin.show .pin__card { opacity: 1; transform: translateY(0); transition-delay: 0.55s; }
 
-.pin__date { display: block; font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3rem; }
-.pin__role { display: block; font-family: var(--ff-display); font-size: 1rem; font-weight: 400; color: var(--ink); line-height: 1.25; margin-bottom: 0.2rem; }
-.pin__co { display: block; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bark); }
-
-.pin__flag {
-  width: 46px; height: 46px;
+/* Logo below the node */
+.tl-item__logo {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2.5px solid var(--bark);
+  border: 1px solid var(--sand);
   background: var(--parchment);
+  margin-top: 1.2rem;
+  box-shadow: 0 4px 18px rgba(42,32,23,0.1);
   flex-shrink: 0;
-  margin-top: 0;
-  box-shadow: 0 4px 18px rgba(42,32,23,0.22);
-  opacity: 0;
-  transform: scale(0);
-  transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
 }
-.pin.show .pin__flag { opacity: 1; transform: scale(1); transition-delay: 0.4s; }
-.pin__flag img { width: 100%; height: 100%; object-fit: cover; }
-
-.pin__stem {
-  flex-shrink: 0;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--earth), transparent);
-  transform-origin: top center;
-  transform: scaleY(0);
-  transition: transform 0.6s var(--ease-out);
+.tl-item__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: sepia(15%) brightness(0.92) contrast(1.04);
 }
-.pin.show .pin__stem { transform: scaleY(1); transition-delay: 0.1s; }
 
-/* Scroll hint */
-.career__hint {
-  position: absolute;
-  bottom: 2.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
+/* Right col: content */
+.tl-item__body {
+  padding-top: 0;
+}
+.tl-item__date {
+  font-family: var(--ff-body);
   font-size: 0.55rem;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--muted);
-  pointer-events: none;
-  transition: opacity 0.5s;
+  margin-bottom: 0.55rem;
+  display: block;
 }
-.career__hint svg { animation: bob 2s ease-in-out infinite; }
-.career__hint.hidden { opacity: 0; }
+.tl-item__role {
+  font-family: var(--ff-display);
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 300;
+  color: var(--ink);
+  line-height: 1.2;
+  margin-bottom: 0.3rem;
+}
+.tl-item__co {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--bark);
+  margin-bottom: 1rem;
+  display: block;
+}
+.tl-item__desc {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.85;
+  max-width: 480px;
+}
+.tl-item__desc p + p { margin-top: 0.5rem; }
+
+/* Coming soon style */
+.tl-item--future .tl-item__node {
+  background: var(--sand);
+  box-shadow: 0 0 0 1px var(--sand);
+}
+.tl-item--future .tl-item__role { color: var(--muted); font-style: italic; }
+.tl-item--future .tl-item__logo { opacity: 0.5; }
+
+
 
 /* ═══════════════════════════════════════════════════
    EDUCATION
@@ -316,7 +350,8 @@ body::after {
   .hero__frame::after { display: none; }
   .about__inner { grid-template-columns: 1fr; }
   .about__imgs { display: none; }
-  .career__sticky { overflow: hidden; }
+  .career__timeline::before { left: calc(8vw + 27px); }
+  .tl-item { gap: 0 1.6rem; }
   .ach-row { grid-template-columns: 1fr; gap: 0.8rem; }
   .ach-row__div { display: none; }
   .footer__base { flex-direction: column; gap: 0.5rem; text-align: center; }
@@ -390,17 +425,73 @@ body::after {
     <p class="career__sub">Scroll to traverse the roadmap of experience.</p>
   </div>
 
-  <div class="career__scroll-track" id="careerTrack">
-    <div class="career__sticky" id="careerSticky">
-      <canvas id="mtnCanvas"></canvas>
-      <div class="career__pins" id="careerPins"></div>
-      <div class="career__hint" id="careerHint">
-        <span>Scroll to reveal</span>
-        <svg width="12" height="18" viewBox="0 0 12 18" fill="none">
-          <path d="M6 0v14M1 10l5 6 5-6" stroke="#9E8E76" stroke-width="1.1"/>
-        </svg>
+  <div class="career__timeline" id="careerTimeline">
+
+    <div class="tl-item reveal">
+      <div class="tl-item__left">
+        <div class="tl-item__node"></div>
+        <div class="tl-item__logo"><img src="https://media.licdn.com/dms/image/v2/D560BAQGbN_32wbkl3g/company-logo_100_100/company-logo_100_100/0/1718263397343/mideagroup_logo?e=1773878400&v=beta&t=U-8NC4DTh04ifuboImvC8sGCVmMVJwoGGKnwAp6d7OI" alt="Midea Group" loading="lazy"/></div>
+      </div>
+      <div class="tl-item__body">
+        <span class="tl-item__date">2021</span>
+        <div class="tl-item__role">Operation &amp; HR Intern</div>
+        <span class="tl-item__co">Midea Group</span>
+        <div class="tl-item__desc">Supported day-to-day HR operations and cross-functional coordination within one of China's largest consumer electronics manufacturers. Gained first-hand exposure to large-scale organisational processes and talent management frameworks.</div>
       </div>
     </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.1s">
+      <div class="tl-item__left">
+        <div class="tl-item__node"></div>
+        <div class="tl-item__logo"><img src="https://media.licdn.com/dms/image/v2/C560BAQGNtpblgQpJoQ/company-logo_100_100/company-logo_100_100/0/1662120928214/deloitte_logo?e=1773878400&v=beta&t=hIFyn8FVZLxCMjTxIC6COPMYFEWsbD1vR1NNkkmIrc0" alt="Deloitte" loading="lazy"/></div>
+      </div>
+      <div class="tl-item__body">
+        <span class="tl-item__date">2023</span>
+        <div class="tl-item__role">Tax &amp; Business Advisory Intern</div>
+        <span class="tl-item__co">Deloitte</span>
+        <div class="tl-item__desc">Contributed to tax advisory projects and business analysis engagements for corporate clients. Developed proficiency in financial modelling, regulatory compliance research, and client-facing communication within a Big Four environment.</div>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.2s">
+      <div class="tl-item__left">
+        <div class="tl-item__node"></div>
+        <div class="tl-item__logo"><img src="https://media.licdn.com/dms/image/v2/D4E0BAQGssTbQToR78w/company-logo_100_100/B4EZpZ2G8VHcAQ-/0/1762443948226/pwc_uk_logo?e=1773878400&v=beta&t=2S6tTL5tHL9s3ReWPijMdn1Yt2yZ1sSSDYg7vqhpKvA" alt="PwC UK" loading="lazy"/></div>
+      </div>
+      <div class="tl-item__body">
+        <span class="tl-item__date">2024</span>
+        <div class="tl-item__role">Business Analysis Intern</div>
+        <span class="tl-item__co">PwC UK</span>
+        <div class="tl-item__desc">Delivered data-driven insights and strategic recommendations across client projects in the UK market. Strengthened analytical skills in a global consulting context, collaborating with multidisciplinary teams on process improvement and market research initiatives.</div>
+      </div>
+    </div>
+
+    <div class="tl-item reveal" style="transition-delay:0.3s">
+      <div class="tl-item__left">
+        <div class="tl-item__node"></div>
+        <div class="tl-item__logo"><img src="https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA" alt="LegacyX UK" loading="lazy"/></div>
+      </div>
+      <div class="tl-item__body">
+        <span class="tl-item__date">2026</span>
+        <div class="tl-item__role">Marketing &amp; Social Media Intern</div>
+        <span class="tl-item__co">LegacyX UK</span>
+        <div class="tl-item__desc">Leading brand marketing and social media strategy for a UK-based organisation. Crafting content narratives, managing digital channels, and translating audience insights into campaign performance — applying MSc-level marketing theory directly in practice.</div>
+      </div>
+    </div>
+
+    <div class="tl-item tl-item--future reveal" style="transition-delay:0.4s">
+      <div class="tl-item__left">
+        <div class="tl-item__node"></div>
+        <div class="tl-item__logo"><img src="https://i0.wp.com/groundedcuriosity.com/wp-content/uploads/2016/09/bigstock-sunrise-of-earth-blue-shining-85817558.jpg?w=3510&quality=89&ssl=1" alt="Future" loading="lazy"/></div>
+      </div>
+      <div class="tl-item__body">
+        <span class="tl-item__date">Coming Soon</span>
+        <div class="tl-item__role">The next chapter</div>
+        <span class="tl-item__co">Your Company</span>
+        <div class="tl-item__desc">Open to full-time brand marketing, strategy, and consumer insights roles globally. If you are building something that requires precision thinking and a global perspective, let's talk.</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -474,7 +565,7 @@ body::after {
     <div class="footer__cta reveal">
       <h2>Let's<br><em>talk.</em></h2>
       <p>For opportunities, collaboration, or a quick chat, email me or connect on LinkedIn.</p>
-      <a href="mailto:c.mao.uk@outlook.com">c.mao.uk@outlook.com</a>
+      <a href="/cdn-cgi/l/email-protection#95f6bbf8f4fabbe0fed5fae0e1f9fafafebbf6faf8"><span class="__cf_email__" data-cfemail="6f0c41020e00411a042f001a1b03000004410c0002">[email&#160;protected]</span></a>
     </div>
     <div class="footer__socials">
       <a href="https://www.linkedin.com/in/mabel-chenyu-mao/">LinkedIn</a>
@@ -486,7 +577,7 @@ body::after {
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ─── NAV ─────────────────────────────────────────────────── */
 (function(){
   const nav = document.getElementById('nav');
@@ -505,237 +596,7 @@ body::after {
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 })();
 
-/* ═══════════════════════════════════════════════════
-   MOUNTAIN CAREER TIMELINE
-═══════════════════════════════════════════════════ */
-(function(){
-  'use strict';
 
-  // ── Career data — edit this to personalise ──────────────────────────────
-  const JOBS = [
-    { date:'2021', role:'Operation & HR Intern',          co:'Midea Group',   flag:'https://media.licdn.com/dms/image/v2/D560BAQGbN_32wbkl3g/company-logo_100_100/company-logo_100_100/0/1718263397343/mideagroup_logo?e=1773878400&v=beta&t=U-8NC4DTh04ifuboImvC8sGCVmMVJwoGGKnwAp6d7OI', country:'CN' },
-    { date:'2023', role:'Tax & Business Advisory Intern', co:'Deloitte',       flag:'https://media.licdn.com/dms/image/v2/C560BAQGNtpblgQpJoQ/company-logo_100_100/company-logo_100_100/0/1662120928214/deloitte_logo?e=1773878400&v=beta&t=hIFyn8FVZLxCMjTxIC6COPMYFEWsbD1vR1NNkkmIrc0', country:'CN' },
-    { date:'2024', role:'Business Analysis Intern',       co:'PwC UK',         flag:'https://media.licdn.com/dms/image/v2/D4E0BAQGssTbQToR78w/company-logo_100_100/B4EZpZ2G8VHcAQ-/0/1762443948226/pwc_uk_logo?e=1773878400&v=beta&t=2S6tTL5tHL9s3ReWPijMdn1Yt2yZ1sSSDYg7vqhpKvA', country:'UK' },
-    { date:'2026', role:'Marketing & Social Media Intern',co:'LegacyX UK',     flag:'https://media.licdn.com/dms/image/v2/D4E0BAQEugZcRR6t0rA/company-logo_100_100/company-logo_100_100/0/1702225554282/legacyxuk_logo?e=1773878400&v=beta&t=xkSx7mv1Qsg5LiLOxnv-WKaOrMvpWgvjNeEqYTuZCWA', country:'UK' },
-    { date:'COMING SOON', role:'Upcoming Roles', co:'Your Company', flag:'https://i0.wp.com/groundedcuriosity.com/wp-content/uploads/2016/09/bigstock-sunrise-of-earth-blue-shining-85817558.jpg?w=3510&quality=89&ssl=1', country:'UK' }
-  ];
-
-  const canvas   = document.getElementById('mtnCanvas');
-  const ctx      = canvas.getContext('2d');
-  const track    = document.getElementById('careerTrack');
-  const pinsEl   = document.getElementById('careerPins');
-  const hintEl   = document.getElementById('careerHint');
-
-  let W, H;
-
-  // ── Mountain silhouette control points (normalised 0–1) ─────────────────
-  const RIDGE = [
-    { nx:0.00,  ny:0.78 },
-    { nx:0.07,  ny:0.62 },
-    { nx:0.15,  ny:0.40 }, // peak A
-    { nx:0.23,  ny:0.58 },
-    { nx:0.33,  ny:0.55 },
-    { nx:0.42,  ny:0.26 }, // peak B — tallest
-    { nx:0.50,  ny:0.50 },
-    { nx:0.58,  ny:0.46 },
-    { nx:0.66,  ny:0.30 }, // peak C
-    { nx:0.74,  ny:0.53 },
-    { nx:0.80,  ny:0.50 },
-    { nx:0.88,  ny:0.36 }, // peak D
-    { nx:0.96,  ny:0.57 },
-    { nx:1.04,  ny:0.70 },
-  ];
-
-  // X positions for each flag (normalised)
-  const FLAG_NX = [0.12, 0.25, 0.42, 0.56, 0.66, 0.87];
-
-  function ridgeY(nx) {
-    for (let i = 0; i < RIDGE.length - 1; i++) {
-      const a = RIDGE[i], b = RIDGE[i+1];
-      if (nx >= a.nx && nx <= b.nx) {
-        const t = (nx - a.nx) / (b.nx - a.nx);
-        return (a.ny + t*(b.ny - a.ny)) * H;
-      }
-    }
-    return H * 0.5;
-  }
-
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
-    W = rect.width;
-    H = rect.height;
-    canvas.width  = W * devicePixelRatio;
-    canvas.height = H * devicePixelRatio;
-    ctx.scale(devicePixelRatio, devicePixelRatio);
-  }
-
-  function drawScene(revealX) {
-    ctx.clearRect(0, 0, W, H);
-
-    // Sky
-    const sky = ctx.createLinearGradient(0, 0, 0, H);
-    sky.addColorStop(0,   '#B8A48A');
-    sky.addColorStop(0.5, '#D4C4A8');
-    sky.addColorStop(1,   '#E8DBC8');
-    ctx.fillStyle = sky;
-    ctx.fillRect(0, 0, W, H);
-
-    // Atmospheric fog bands
-    [0.38, 0.48, 0.56].forEach((yFrac, i) => {
-      const fy = yFrac * H;
-      const fg = ctx.createLinearGradient(0, fy-18, 0, fy+18);
-      fg.addColorStop(0, 'transparent');
-      fg.addColorStop(0.5, `rgba(232,220,200,${0.3 - i*0.06})`);
-      fg.addColorStop(1, 'transparent');
-      ctx.fillStyle = fg;
-      ctx.fillRect(0, fy-18, W, 36);
-    });
-
-    // Draw three mountain layers with depth
-    drawLayer(1.02, 0.82, 0.05, '#A49480', null);        // far bg
-    drawLayer(1.00, 0.90, 0.02, '#7A6655', '#E0D4BC88'); // mid
-    drawLayer(1.00, 1.00, 0.00, '#5C4A35', '#EDE5D0BB'); // fg + snow
-
-    // Ground / earth base
-    const gd = ctx.createLinearGradient(0, H*0.85, 0, H);
-    gd.addColorStop(0, 'transparent');
-    gd.addColorStop(1, '#2A2017');
-    ctx.fillStyle = gd;
-    ctx.fillRect(0, H*0.85, W, H*0.15);
-
-    // Vignette edges
-    const vg = ctx.createLinearGradient(0, 0, W, 0);
-    vg.addColorStop(0, 'rgba(42,32,23,0.25)');
-    vg.addColorStop(0.08, 'transparent');
-    vg.addColorStop(0.92, 'transparent');
-    vg.addColorStop(1, 'rgba(42,32,23,0.25)');
-    ctx.fillStyle = vg;
-    ctx.fillRect(0, 0, W, H);
-
-    // Fog/reveal mask — right side fades out based on scroll
-    if (revealX < W) {
-      const edge = Math.max(0, revealX);
-      const mx = ctx.createLinearGradient(edge - 80, 0, edge + 60, 0);
-      mx.addColorStop(0, 'transparent');
-      mx.addColorStop(1, 'rgba(245,240,232,0.88)');
-      ctx.fillStyle = mx;
-      ctx.fillRect(edge - 80, 0, W - edge + 80, H);
-      ctx.fillStyle = 'rgba(245,240,232,0.88)';
-      ctx.fillRect(edge + 60, 0, W, H);
-    }
-  }
-
-  function drawLayer(scaleX, scaleY, shiftY, fill, snowColor) {
-    const pts = RIDGE.map(p => ({
-      x: p.nx * W * scaleX,
-      y: p.ny * H * scaleY + shiftY * H,
-    }));
-
-    ctx.beginPath();
-    ctx.moveTo(-20, H + 10);
-
-    const all = [{ x:-20, y:H+10 }, ...pts, { x:W+20, y:H+10 }];
-    for (let i = 1; i < all.length - 2; i++) {
-      const p0=all[i-1], p1=all[i], p2=all[i+1], p3=all[i+2];
-      const cp1x = p1.x + (p2.x - p0.x)/5.5;
-      const cp1y = p1.y + (p2.y - p0.y)/5.5;
-      const cp2x = p2.x - (p3.x - p1.x)/5.5;
-      const cp2y = p2.y - (p3.y - p1.y)/5.5;
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, p2.x, p2.y);
-    }
-    ctx.lineTo(W+20, H+10);
-    ctx.closePath();
-
-    ctx.save();
-    ctx.shadowColor = 'rgba(0,0,0,0.12)';
-    ctx.shadowBlur  = 25;
-    ctx.fillStyle   = fill;
-    ctx.fill();
-    ctx.restore();
-
-    if (snowColor) {
-      pts.forEach(p => {
-        const snowR = (H - p.y) * 0.18;
-        if (snowR < 6) return;
-        const sg = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, snowR * 2.8);
-        sg.addColorStop(0, snowColor);
-        sg.addColorStop(0.6, snowColor.replace('BB','44').replace('88','22'));
-        sg.addColorStop(1, 'transparent');
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, snowR * 2.8, 0, Math.PI*2);
-        ctx.fillStyle = sg;
-        ctx.fill();
-      });
-    }
-  }
-
-  function buildPins() {
-    pinsEl.innerHTML = '';
-    JOBS.forEach((job, i) => {
-      const nx    = FLAG_NX[i];
-      const px    = nx * W;
-      const peakY = ridgeY(nx);
-      const stemH = 70 + (i % 3) * 28;
-
-      const pin = document.createElement('div');
-      pin.className = 'pin';
-      pin.id = `pin-${i}`;
-      pin.style.cssText = `left: ${px}px; top: ${peakY - stemH - 46}px;`;
-
-      pin.innerHTML = `
-        <div class="pin__card">
-          <span class="pin__date">${job.date}</span>
-          <span class="pin__role">${job.role}</span>
-          <span class="pin__co">${job.co}</span>
-        </div>
-        <div class="pin__flag">
-          <img src="${job.flag}" alt="${job.country}" loading="lazy"/>
-        </div>
-        <div class="pin__stem" style="height:${stemH}px;"></div>
-      `;
-      pinsEl.appendChild(pin);
-    });
-  }
-
-  function getProgress() {
-    const rect  = track.getBoundingClientRect();
-    const total = track.offsetHeight - window.innerHeight;
-    const gone  = -rect.top;
-    return Math.max(0, Math.min(1, gone / total));
-  }
-
-  function update() {
-    const p = getProgress();
-    const revealX = p * W;
-
-    drawScene(revealX);
-
-    JOBS.forEach((_, i) => {
-      const threshold = FLAG_NX[i] - 0.06;
-      const pin = document.getElementById(`pin-${i}`);
-      if (!pin) return;
-      pin.classList.toggle('show', p >= threshold);
-    });
-
-    hintEl.classList.toggle('hidden', p > 0.08);
-  }
-
-  function init() {
-    resize();
-    buildPins();
-    update();
-  }
-
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', () => { resize(); buildPins(); update(); });
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    requestAnimationFrame(init);
-  }
-
-})();
 </script>
 </body>
 </html>
